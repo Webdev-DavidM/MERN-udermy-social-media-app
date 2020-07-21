@@ -1,0 +1,6 @@
+{
+  "mongoURI": "mongodb+srv://footballblubber:Technics1@cluster0-ja328.mongodb.net/BRAD-TRAVERSY-MERN-SOCIAL-APP?retryWrites=true&w=majority",
+  "jwtSecret": "mysecrettoken",
+  "githubClientId": "046777cc5b06ee262b54",
+  "githubSecret": "6e1e15a2e90c77a7a4b7dfcb7946c67abbf5f5e4"
+}
