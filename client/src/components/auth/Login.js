@@ -1,29 +1,34 @@
 import React, { Fragment, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import { login } from '../../actions/auth';
 
-const Login = () => {
-  // Below is a hook
+const Login = ({ login, isAuthenticated }) => {
   const [formData, setFormData] = useState({
     email: '',
-    password: '',
+    password: ''
   });
 
   const { email, password } = formData;
 
-  const onChange = (e) =>
+  const onChange = e =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
 
-  const onSubmit = async (e) => {
+  const onSubmit = e => {
     e.preventDefault();
-
-    console.log('success');
+    login(email, password);
   };
+
+  if (isAuthenticated) {
+    return <Redirect to="/dashboard" />;
+  }
 
   return (
     <Fragment>
       <h1 className="large text-primary">Sign In</h1>
       <p className="lead">
-        <i className="fas fa-user"></i> Sign into your account
+        <i className="fas fa-user" /> Sign Into Your Account
       </p>
       <form className="form" onSubmit={onSubmit}>
         <div className="form-group">
@@ -33,6 +38,7 @@ const Login = () => {
             name="email"
             value={email}
             onChange={onChange}
+            required
           />
         </div>
         <div className="form-group">
@@ -40,10 +46,9 @@ const Login = () => {
             type="password"
             placeholder="Password"
             name="password"
-            minLength="6"
             value={password}
             onChange={onChange}
-            required
+            minLength="6"
           />
         </div>
         <input type="submit" className="btn btn-primary" value="Login" />
@@ -55,4 +60,13 @@ const Login = () => {
   );
 };
 
-export default Login;
+Login.propTypes = {
+  login: PropTypes.func.isRequired,
+  isAuthenticated: PropTypes.bool
+};
+
+const mapStateToProps = state => ({
+  isAuthenticated: state.auth.isAuthenticated
+});
+
+export default connect(mapStateToProps, { login })(Login);
